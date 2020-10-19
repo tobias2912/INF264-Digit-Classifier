@@ -12,12 +12,17 @@ def get_feature(fileName):
 def get_label(fileName):
     return genfromtxt(fileName, delimiter='\n')
 
-def test_file(file1, file2):
-    head = file1[:10]
-    tail = file1[-10:]
-    test = np.append(head, tail)
+def create_smaller_file(X, y):
+    seed = 33
+    X_keep, X_throw, y_keep, y_throw = train_test_split(X, y, 
+                                        test_size=0.1, 
+                                        shuffle=True, 
+                                        random_state=seed)
     
-    np.savetxt('../data/testset_digit.csv', test, delimiter=',')
+    
+    np.savetxt('../data/digit_smaller.csv',X_keep , delimiter=',', fmt='%f')
+    np.savetxt('../data/label_smaller.csv',y_keep , delimiter='\n', fmt='%f')
+    
 
 def split(digits, label):
     seed = 33
@@ -46,8 +51,19 @@ def plot(digits, label, predict):
     plt.show()    
     
 if __name__ == "__main__":    
-    digits = get_feature('../data/handwritten_digits_images.csv')
-    label = get_label('../data/handwritten_digits_labels.csv')
+    
+    if True:
+        digits = get_feature('../data/handwritten_digits_images.csv')
+        label = get_label('../data/handwritten_digits_labels.csv')
+        create_smaller_file(digits, label)
+    else:
+        digits=get_feature('../data/digit_smaller.csv')
+        label=get_feature('../data/digit_smaller.csv')
+    
+    #plot(digits, label, 4600)
+        
+        
+        
     
 
 
