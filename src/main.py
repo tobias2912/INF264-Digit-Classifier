@@ -1,3 +1,4 @@
+import pandas as pd
 from sklearn  import svm
 from sklearn.linear_model import LinearRegression
 from sklearn.model_selection import train_test_split
@@ -15,7 +16,7 @@ def create_smaller_file(X, y):
     '''create and save a smaller file for testing'''
     seed = 33
     X_keep, X_throw, y_keep, y_throw = train_test_split(X, y, 
-                                        test_size=0.1, 
+                                        test_size=0.9, 
                                         shuffle=True, 
                                         random_state=seed)
     np.savetxt('../data/digit_smaller.csv',X_keep , delimiter=',', fmt='%f')
@@ -53,7 +54,7 @@ def plot(digits, label, predict):
     
 if __name__ == "__main__":    
     
-    if True:
+    if False:
         digits = get_feature('../data/handwritten_digits_images.csv')
         label = get_label('../data/handwritten_digits_labels.csv')
         create_smaller_file(digits, label)
@@ -62,3 +63,15 @@ if __name__ == "__main__":
         label=get_feature('../data/digit_smaller.csv')
     
     #plot(digits, label, 4600)
+        
+        
+    
+
+
+
+    
+     
+
+    
+
+    
