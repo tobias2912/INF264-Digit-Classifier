@@ -1,5 +1,60 @@
-import matplotlib
-from numpy import *
-my_data = genfromtxt("../data/handwritten_digits_images.csv", delimiter=',')
-x_data = my_data.reshape(my_data.shape[0], 28, 28)
-matplotlib.pyplot.imshow(x_data, cmap="Greys")
+import pandas as pd
+from sklearn  import svm
+from sklearn.linear_model import LinearRegression
+from sklearn.model_selection import train_test_split
+import matplotlib.pyplot as plt
+import numpy as np
+from numpy import genfromtxt
+
+def get_feature(fileName):
+    return genfromtxt(fileName, delimiter=',')
+
+def get_label(fileName):
+    return genfromtxt(fileName, delimiter='\n')
+
+def test_file(file1, file2):
+    head = file1[:10]
+    tail = file1[-10:]
+    test = np.append(head, tail)
+    
+    np.savetxt('../data/testset_digit.csv', test, delimiter=',')
+
+def split(digits, label):
+    seed = 33
+    X_train, X_val_test, Y_train, Y_val_test = train_test_split(digits, label,      
+                                                                test_size=0.3, 
+                                                                shuffle=True, 
+                                                                random_state=seed)
+    seed = 77
+    X_val, X_test, Y_val, Y_test = train_test_split(X_val_test, Y_val_test, 
+                                                                test_size=0.5, 
+                                                                shuffle=True, 
+                                                                random_state=seed)
+    return X_train, Y_train, X_val, Y_val, X_test, Y_test
+       
+def svc_classifier(X_train, Y_train, X_test, Y_test):
+    classifier = svm.SVC(gamma = 0.001)
+    classifier.fit(X_train, Y_train)
+    predict = classifier.predict(X_test)
+    score = classifier.score(predict, Y_test)
+    print('score ',score)
+   
+def plot(digits, label, predict):
+    img = digits.reshape(digits.shape[0], 28, 28)
+    plt.imshow(img[predict], cmap="Greys")
+    print(label[predict])
+    plt.show()    
+    
+if __name__ == "__main__":    
+    digits = get_feature('../data/handwritten_digits_images.csv')
+    label = get_label('../data/handwritten_digits_labels.csv')
+    
+
+
+
+    
+     
+
+    
+
+    
