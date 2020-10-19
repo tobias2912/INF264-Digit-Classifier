@@ -15,7 +15,7 @@ def get_label(fileName):
 def create_smaller_file(X, y):
     seed = 33
     X_keep, X_throw, y_keep, y_throw = train_test_split(X, y, 
-                                        test_size=0.1, 
+                                        test_size=0.9, 
                                         shuffle=True, 
                                         random_state=seed)
     
@@ -52,15 +52,15 @@ def plot(digits, label, predict):
     
 if __name__ == "__main__":    
     
-    if True:
+    if False:
         digits = get_feature('../data/handwritten_digits_images.csv')
         label = get_label('../data/handwritten_digits_labels.csv')
         create_smaller_file(digits, label)
     else:
         digits=get_feature('../data/digit_smaller.csv')
-        label=get_feature('../data/digit_smaller.csv')
+        label=get_feature('../data/label_smaller.csv')
     
-    #plot(digits, label, 4600)
+    plot(digits, label, 3)
         
         
         
