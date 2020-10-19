@@ -60,7 +60,12 @@ if __name__ == "__main__":
         digits=get_feature('../data/digit_smaller.csv')
         label=get_feature('../data/label_smaller.csv')
     
-    plot(digits, label, 3)
+    #plot(digits, label, 3)
+    
+    X_train, Y_train, X_val, Y_val, X_test, Y_test = split(digits, label)
+    
+    svc_classifier(X_train, Y_train, X_test, Y_test)
+    
         
         
         
