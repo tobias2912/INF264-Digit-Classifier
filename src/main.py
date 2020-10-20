@@ -39,6 +39,10 @@ def split(digits, label):
        
 def svc_classifier(X_train, Y_train, X_test, Y_test):
     '''Create a SVC model'''
+    Y_train = Y_train.reshape(-1,1)
+    Y_test = Y_test.reshape(-1,1)
+    print(Y_train)
+    print('*******SHAPE: ', Y_train.shape, Y_test.shape)
     classifier = svm.SVC(gamma = 0.001)
     classifier.fit(X_train, Y_train)
     predict = classifier.predict(X_test)
@@ -60,7 +64,7 @@ if __name__ == "__main__":
         create_smaller_file(digits, label)
     else:
         digits=get_feature('../data/digit_smaller.csv')
-        label=get_feature('../data/digit_smaller.csv')
+        label=get_feature('../data/label_smaller.csv')
     
     #plot(digits, label, 3)
     
