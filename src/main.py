@@ -1,6 +1,7 @@
 import pandas as pd
-from sklearn  import svm
+from sklearn  import svm, metrics
 from sklearn.linear_model import LinearRegression
+from sklearn.neighbors import KNeighborsClassifier
 from sklearn.model_selection import train_test_split
 import matplotlib.pyplot as plt
 import numpy as np
@@ -40,15 +41,31 @@ def split(digits, label):
 def svc_classifier(X_train, Y_train, X_test, Y_test):
     '''Create a SVC model'''
     Y_train = Y_train.reshape(-1,1)
+    # Y_train = Y_train.ravel()
     Y_test = Y_test.reshape(-1,1)
-    print(Y_train)
-    print('*******SHAPE: ', Y_train.shape, Y_test.shape)
-    classifier = svm.SVC(gamma = 0.001)
-    classifier.fit(X_train, Y_train)
+    print('*******SHAPE of  Y: ', Y_train.shape, Y_test.shape)
+    # classifier = svm.SVC(gamma = 0.001)
+    classifier = KNeighborsClassifier(n_neighbors=3)
+    print("fits classifier...")
+    classifier.fit(X_train, Y_train.ravel())
+    print("predicts test data...")
     predict = classifier.predict(X_test)
-    score = classifier.score(predict, Y_test)
+    # score = classifier.score(predict, Y_test)
+    score = get_score(predict, Y_test)
+    disp = metrics.plot_confusion_matrix(classifier, X_test, Y_test)
+    disp.figure_.suptitle("Confusion Matrix")
+    print("Confusion matrix:\n%s" % disp.confusion_matrix)
     print('score ',score)
-   
+
+def get_score(predict, actual):
+    correct, wrong = 0,0
+    for x, y in enumerate(actual):
+        if y == predict[x]:
+            correct+=1
+        else:
+            wrong+=1
+    return correct/(correct+wrong)
+
 def plot(digits, label, predict):
     '''Plot a single image and print the label to console'''
     img = digits.reshape(digits.shape[0], 28, 28)
@@ -66,22 +83,8 @@ if __name__ == "__main__":
         digits=get_feature('../data/digit_smaller.csv')
         label=get_feature('../data/label_smaller.csv')
     
-    #plot(digits, label, 3)
     
     X_train, Y_train, X_val, Y_val, X_test, Y_test = split(digits, label)
     
     svc_classifier(X_train, Y_train, X_test, Y_test)
-    
-        
-        
-        
-    
-
-
-
-    
-     
-
-    
-
     
