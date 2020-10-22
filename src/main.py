@@ -2,6 +2,8 @@ import pandas as pd
 from sklearn import preprocessing
 from sklearn  import  metrics
 from sklearn.svm import LinearSVC
+from sklearn  import  metrics, preprocessing
+from sklearn.svm import SVC
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.linear_model import LinearRegression
 from sklearn.neighbors import KNeighborsClassifier
@@ -30,16 +32,12 @@ def create_smaller_file(X, y):
 def split(digits, label):
     '''split dataset into test, train, val'''
     seed = 33
-    X_train, X_val_test, Y_train, Y_val_test = train_test_split(digits, label,      
+    X_train, X_test, Y_train, Y_test = train_test_split(digits, label,      
                                                                 test_size=0.3, 
                                                                 shuffle=True, 
                                                                 random_state=seed)
-    seed = 77
-    X_val, X_test, Y_val, Y_test = train_test_split(X_val_test, Y_val_test, 
-                                                                test_size=0.5, 
-                                                                shuffle=True, 
-                                                                random_state=seed)
-    return X_train, Y_train, X_val, Y_val, X_test, Y_test
+
+    return X_train, Y_train, X_test, Y_test
        
 
 def get_score(predict, actual):
@@ -109,13 +107,14 @@ if __name__ == "__main__":
         label=get_feature('../data/label_smaller.csv')
     
     X_train, Y_train, X_val, Y_val, X_test, Y_test = split(digits, label)
-    #scaling
-    # X_train = preprocessing.scale(X_train)
-    # Y_train = preprocessing.scale(Y_train)
 
     Y_train = Y_train.reshape(-1,1)
     Y_test = Y_test.reshape(-1,1)
     # train and test different classifiers
+
+    X_train =  preprocessing.normalize(X_train) 
+    X_test =  preprocessing.normalize(X_test) 
+        
     support_vector(X_train, Y_train, X_test, Y_test)
     randomforest(X_train, Y_train, X_test, Y_test)
     kneighbors(X_train, Y_train, X_test, Y_test)
