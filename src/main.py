@@ -1,6 +1,7 @@
 import pandas as pd
+from sklearn import preprocessing
 from sklearn  import  metrics
-from sklearn.svm import SVC
+from sklearn.svm import LinearSVC
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.linear_model import LinearRegression
 from sklearn.neighbors import KNeighborsClassifier
@@ -59,6 +60,7 @@ def plot(digits, label, predict):
     plt.show()    
 
 def print_stats(clf, X_test, Y_test):
+    '''prints stats on classifier performance'''
     print("best params: ", clf.best_params_)
     print("predicts test data...")
     predict = clf.predict(X_test)
@@ -85,21 +87,36 @@ def kneighbors(X_train, Y_train, X_test, Y_test):
     clf.fit(X_train, Y_train.ravel())
     print_stats(clf, X_test, Y_test)
 
+def support_vector(X_train, Y_train, X_test, Y_test):
+    '''Create a K-neighbors model with cross validation parameter search'''
+    tuned_parameters = [{"penalty":['l1', 'l2']}]
+    classifier = LinearSVC(max_iter=3000, dual=False)
+    print("fits classifier...")
+    clf = GridSearchCV(classifier, tuned_parameters)
+    clf.fit(X_train, Y_train.ravel())
+    print_stats(clf, X_test, Y_test)
+
 if __name__ == "__main__":    
     np.random.seed(123456)
     if False:
+        #create a smaller testfile for testing
         digits = get_feature('../data/handwritten_digits_images.csv')
         label = get_label('../data/handwritten_digits_labels.csv')
         create_smaller_file(digits, label)
     else:
+        #read given file
         digits=get_feature('../data/digit_smaller.csv')
         label=get_feature('../data/label_smaller.csv')
     
     X_train, Y_train, X_val, Y_val, X_test, Y_test = split(digits, label)
-    
+    #scaling
+    # X_train = preprocessing.scale(X_train)
+    # Y_train = preprocessing.scale(Y_train)
+
     Y_train = Y_train.reshape(-1,1)
     Y_test = Y_test.reshape(-1,1)
-    
+    # train and test different classifiers
+    support_vector(X_train, Y_train, X_test, Y_test)
     randomforest(X_train, Y_train, X_test, Y_test)
     kneighbors(X_train, Y_train, X_test, Y_test)
     
