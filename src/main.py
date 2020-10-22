@@ -2,7 +2,7 @@ import pandas as pd
 from sklearn  import svm, metrics
 from sklearn.linear_model import LinearRegression
 from sklearn.neighbors import KNeighborsClassifier
-from sklearn.model_selection import train_test_split
+from sklearn.model_selection import train_test_split, GridSearchCV
 import matplotlib.pyplot as plt
 import numpy as np
 from numpy import genfromtxt
@@ -38,26 +38,25 @@ def split(digits, label):
                                                                 random_state=seed)
     return X_train, Y_train, X_val, Y_val, X_test, Y_test
        
-def svc_classifier(X_train, Y_train, X_test, Y_test):
-    '''Create a SVC model'''
+def kneighbors(X_train, Y_train, X_test, Y_test):
+    '''Create a SVC model with cross validation parameter search'''
     Y_train = Y_train.reshape(-1,1)
-    # Y_train = Y_train.ravel()
     Y_test = Y_test.reshape(-1,1)
-    print('*******SHAPE of  Y: ', Y_train.shape, Y_test.shape)
-    # classifier = svm.SVC(gamma = 0.001)
-    classifier = KNeighborsClassifier(n_neighbors=3)
+    tuned_parameters = [{"n_neighbors":[3,5,7]}]
+    classifier = KNeighborsClassifier()
     print("fits classifier...")
-    classifier.fit(X_train, Y_train.ravel())
+    clf = GridSearchCV(classifier, tuned_parameters)
+    clf.fit(X_train, Y_train.ravel())
+    print("best params: ", clf.best_params_)
     print("predicts test data...")
-    predict = classifier.predict(X_test)
-    # score = classifier.score(predict, Y_test)
+    predict = clf.predict(X_test)
     score = get_score(predict, Y_test)
-    disp = metrics.plot_confusion_matrix(classifier, X_test, Y_test)
-    disp.figure_.suptitle("Confusion Matrix")
+    disp = metrics.plot_confusion_matrix(clf, X_test, Y_test)
     print("Confusion matrix:\n%s" % disp.confusion_matrix)
     print('score ',score)
 
 def get_score(predict, actual):
+    '''calcuate percentage of correct predictions'''
     correct, wrong = 0,0
     for x, y in enumerate(actual):
         if y == predict[x]:
@@ -74,7 +73,6 @@ def plot(digits, label, predict):
     plt.show()    
     
 if __name__ == "__main__":    
-    
     if False:
         digits = get_feature('../data/handwritten_digits_images.csv')
         label = get_label('../data/handwritten_digits_labels.csv')
@@ -83,8 +81,7 @@ if __name__ == "__main__":
         digits=get_feature('../data/digit_smaller.csv')
         label=get_feature('../data/label_smaller.csv')
     
-    
     X_train, Y_train, X_val, Y_val, X_test, Y_test = split(digits, label)
     
-    svc_classifier(X_train, Y_train, X_test, Y_test)
+    kneighbors(X_train, Y_train, X_test, Y_test)
     
