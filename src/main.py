@@ -1,5 +1,7 @@
 import pandas as pd
-from sklearn  import svm, metrics
+from sklearn  import  metrics
+from sklearn.svm import SVC
+from sklearn.ensemble import RandomForestClassifier
 from sklearn.linear_model import LinearRegression
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.model_selection import train_test_split, GridSearchCV
@@ -38,22 +40,6 @@ def split(digits, label):
                                                                 random_state=seed)
     return X_train, Y_train, X_val, Y_val, X_test, Y_test
        
-def kneighbors(X_train, Y_train, X_test, Y_test):
-    '''Create a SVC model with cross validation parameter search'''
-    Y_train = Y_train.reshape(-1,1)
-    Y_test = Y_test.reshape(-1,1)
-    tuned_parameters = [{"n_neighbors":[3,5,7]}]
-    classifier = KNeighborsClassifier()
-    print("fits classifier...")
-    clf = GridSearchCV(classifier, tuned_parameters)
-    clf.fit(X_train, Y_train.ravel())
-    print("best params: ", clf.best_params_)
-    print("predicts test data...")
-    predict = clf.predict(X_test)
-    score = get_score(predict, Y_test)
-    disp = metrics.plot_confusion_matrix(clf, X_test, Y_test)
-    print("Confusion matrix:\n%s" % disp.confusion_matrix)
-    print('score ',score)
 
 def get_score(predict, actual):
     '''calcuate percentage of correct predictions'''
@@ -71,8 +57,36 @@ def plot(digits, label, predict):
     plt.imshow(img[predict], cmap="Greys")
     print(label[predict])
     plt.show()    
-    
+
+def print_stats(clf, X_test, Y_test):
+    print("best params: ", clf.best_params_)
+    print("predicts test data...")
+    predict = clf.predict(X_test)
+    score = get_score(predict, Y_test)
+    disp = metrics.plot_confusion_matrix(clf, X_test, Y_test)
+    print("Confusion matrix:\n%s" % disp.confusion_matrix)
+    print('score ',score)
+
+def randomforest(X_train, Y_train, X_test, Y_test):
+    '''Create a randomforest model with cross validation parameter search'''
+    tuned_parameters = [{"criterion":["gini","entropy"]}]
+    classifier = RandomForestClassifier()
+    print("fits classifier...")
+    clf = GridSearchCV(classifier, tuned_parameters)
+    clf.fit(X_train, Y_train.ravel())
+    print_stats(clf, X_test, Y_test)
+
+def kneighbors(X_train, Y_train, X_test, Y_test):
+    '''Create a K-neighbors model with cross validation parameter search'''
+    tuned_parameters = [{"n_neighbors":[3,5,7]}]
+    classifier = KNeighborsClassifier()
+    print("fits classifier...")
+    clf = GridSearchCV(classifier, tuned_parameters)
+    clf.fit(X_train, Y_train.ravel())
+    print_stats(clf, X_test, Y_test)
+
 if __name__ == "__main__":    
+    np.random.seed(123456)
     if False:
         digits = get_feature('../data/handwritten_digits_images.csv')
         label = get_label('../data/handwritten_digits_labels.csv')
@@ -83,5 +97,9 @@ if __name__ == "__main__":
     
     X_train, Y_train, X_val, Y_val, X_test, Y_test = split(digits, label)
     
+    Y_train = Y_train.reshape(-1,1)
+    Y_test = Y_test.reshape(-1,1)
+    
+    randomforest(X_train, Y_train, X_test, Y_test)
     kneighbors(X_train, Y_train, X_test, Y_test)
     
