@@ -4,7 +4,7 @@ from sklearn  import  metrics
 from sklearn.svm import LinearSVC
 from sklearn  import  metrics, preprocessing
 from sklearn.svm import SVC
-from sklearn.ensemble import RandomForestClassifier
+from sklearn.ensemble import RandomForestClassifier, BaggingClassifier
 from sklearn.linear_model import LinearRegression
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.model_selection import train_test_split, GridSearchCV
@@ -69,7 +69,7 @@ def print_stats(clf, X_test, Y_test):
 
 def randomforest(X_train, Y_train, X_test, Y_test):
     '''Create a randomforest model with cross validation parameter search'''
-    tuned_parameters = [{"criterion":["gini","entropy"]}]
+    tuned_parameters = {"criterion":["gini","entropy"], 'n_estimators':[50, 100, 150]}
     classifier = RandomForestClassifier()
     print("fits classifier...")
     clf = GridSearchCV(classifier, tuned_parameters)
@@ -78,8 +78,17 @@ def randomforest(X_train, Y_train, X_test, Y_test):
 
 def kneighbors(X_train, Y_train, X_test, Y_test):
     '''Create a K-neighbors model with cross validation parameter search'''
-    tuned_parameters = [{"n_neighbors":[3,5,7]}]
+    tuned_parameters = {"n_neighbors":[2, 3,4]}
     classifier = KNeighborsClassifier()
+    print("fits classifier...")
+    clf = GridSearchCV(classifier, tuned_parameters)
+    clf.fit(X_train, Y_train.ravel())
+    print_stats(clf, X_test, Y_test)
+
+def baggingkneighbors(X_train, Y_train, X_test, Y_test):
+    '''Create a baggingkneighbors model with cross validation parameter search'''
+    tuned_parameters = {'max_samples':[0.5, 1], 'max_features':[0.5, 1]}
+    classifier = BaggingClassifier(KNeighborsClassifier(), n_jobs=-1)
     print("fits classifier...")
     clf = GridSearchCV(classifier, tuned_parameters)
     clf.fit(X_train, Y_train.ravel())
@@ -87,7 +96,7 @@ def kneighbors(X_train, Y_train, X_test, Y_test):
 
 def support_vector(X_train, Y_train, X_test, Y_test):
     '''Create a K-neighbors model with cross validation parameter search'''
-    tuned_parameters = [{"penalty":['l1', 'l2']}]
+    tuned_parameters = {"penalty":['l1', 'l2']}
     classifier = LinearSVC(max_iter=3000, dual=False)
     print("fits classifier...")
     clf = GridSearchCV(classifier, tuned_parameters)
@@ -106,7 +115,7 @@ if __name__ == "__main__":
         digits=get_feature('../data/digit_smaller.csv')
         label=get_feature('../data/label_smaller.csv')
     
-    X_train, Y_train, X_val, Y_val, X_test, Y_test = split(digits, label)
+    X_train, Y_train, X_test, Y_test = split(digits, label)
 
     Y_train = Y_train.reshape(-1,1)
     Y_test = Y_test.reshape(-1,1)
@@ -114,8 +123,8 @@ if __name__ == "__main__":
 
     X_train =  preprocessing.normalize(X_train) 
     X_test =  preprocessing.normalize(X_test) 
-        
-    support_vector(X_train, Y_train, X_test, Y_test)
+    baggingkneighbors(X_train, Y_train, X_test, Y_test)
     randomforest(X_train, Y_train, X_test, Y_test)
+    support_vector(X_train, Y_train, X_test, Y_test)
     kneighbors(X_train, Y_train, X_test, Y_test)
     
