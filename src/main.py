@@ -33,16 +33,17 @@ def main():
 
     Y_train = Y_train.reshape(-1,1)
     Y_test = Y_test.reshape(-1,1)
-    # train and test different classifiers
 
     X_train =  preprocessing.normalize(X_train) 
     X_test =  preprocessing.normalize(X_test) 
 
+    # train and test different classifiers
     # baggingkneighbors
     classifiers = [randomforest(), support_vector() ,kneighbors()]
     best_clf = None
     best_score = 0
     for clf in classifiers:
+        print('fits classifier..')
         clf.fit(X_train, Y_train)
         score = clf.get_grid_search().best_score_
         if score>best_score:
