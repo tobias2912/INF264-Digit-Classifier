@@ -35,7 +35,7 @@ we measured accuracy in percentage of correct predictions, because a prediction 
 
 ### model selection scheme
 
-- we selected models based on the sklearn GridSearchCV class, that both does a grid search over the hyperparameters and does cross validation 
+- we selected models based on the sklearn GridSearchCV class, that both does a grid search over the hyperparameters and does the default 5-fold cross validation to find the best model and hyperparameters.
 
 ### chosen model
 
@@ -46,8 +46,13 @@ we measured accuracy in percentage of correct predictions, because a prediction 
 
 ### expected performance
 
+We have a ... percent accuraccy on the test data, and we would expect that on unseen data, given that the input pictures are similar in quality, resolution, angle etc. as the pcitures we have used for training.
+
 ### overfitting
 
-- cross validation
+- Test set is kept away from model until final evaluation
+
+- Cross validation is used to train on some data, and validate on different data.
 
 ### possible improvements
+
