@@ -104,43 +104,6 @@ def model_stats(clf, X_test, Y_test):
     print('score ',score)
     return score
 
-# def randomforest(X_train, Y_train, X_test, Y_test):
-#     '''Create a randomforest model with cross validation parameter search'''
-#     tuned_parameters = {"criterion":["gini","entropy"], 'n_estimators':[50, 100, 150]}
-#     classifier = RandomForestClassifier()
-#     print("fits classifier...")
-#     clf = GridSearchCV(classifier, tuned_parameters)
-#     clf.fit(X_train, Y_train.ravel())
-#     print(clf.best_score_)   
-#     return model_stats(clf, X_test, Y_test)
-
-# def kneighbors(X_train, Y_train, X_test, Y_test):
-#     '''Create a K-neighbors model with cross validation parameter search'''
-#     tuned_parameters = {"n_neighbors":[2, 3,4]}
-#     classifier = KNeighborsClassifier()
-#     print("fits classifier...")
-#     clf = GridSearchCV(classifier, tuned_parameters)
-#     clf.fit(X_train, Y_train.ravel())
-#     return model_stats(clf, X_test, Y_test)
-
-# def baggingkneighbors(X_train, Y_train, X_test, Y_test):
-#     '''Create a baggingkneighbors model with cross validation parameter search'''
-#     tuned_parameters = {'max_samples':[0.5, 1], 'max_features':[0.5, 1]}
-#     classifier = BaggingClassifier(KNeighborsClassifier(), n_jobs=-1)
-#     print("fits classifier...")
-#     clf = GridSearchCV(classifier, tuned_parameters)
-#     clf.fit(X_train, Y_train.ravel())
-#     print(clf.best_score_)
-#     return model_stats(clf, X_test, Y_test)
-
-# def support_vector(X_train, Y_train, X_test, Y_test):
-#     '''Create a K-neighbors model with cross validation parameter search'''
-#     tuned_parameters = {"penalty":['l1', 'l2']}
-#     classifier = LinearSVC(max_iter=3000, dual=False)
-#     print("fits classifier...")
-#     clf = GridSearchCV(classifier, tuned_parameters)
-#     clf.fit(X_train, Y_train.ravel())
-#     return model_stats(clf, X_test, Y_test)
 
 def get_feature(fileName):
     return genfromtxt(fileName, delimiter=',')
