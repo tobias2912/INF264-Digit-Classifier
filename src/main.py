@@ -40,7 +40,7 @@ def main():
 
     # train and test different classifiers
     # baggingkneighbors
-    classifiers = [randomforest(), support_vector()]
+    classifiers = [randomforest(), support_vector(), MLP_classifier()]
     best_clf = None
     best_score = 0
     for clf in classifiers:
@@ -62,7 +62,7 @@ def create_smaller_file(X, y):
     '''create and save a smaller file for testing'''
     seed = 33
     X_keep, X_throw, y_keep, y_throw = train_test_split(X, y, 
-                                        test_size=0.95, 
+                                        test_size=0.80, 
                                         shuffle=True, 
                                         random_state=seed)
     np.savetxt('../data/digit_smaller.csv',X_keep , delimiter=',', fmt='%f')
