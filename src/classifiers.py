@@ -8,7 +8,7 @@ from sklearn.model_selection import train_test_split, GridSearchCV
 class support_vector:
     tuned_parameters = {"penalty":['l1', 'l2']}
     classifier = LinearSVC(max_iter=3000, dual=False)
-    clf = GridSearchCV(classifier, tuned_parameters)
+    clf = GridSearchCV(classifier, tuned_parameters, refit=True)
     
     def fit(self, X_train, y_train):
         self.get_grid_search().fit(X_train, y_train.ravel())
@@ -19,7 +19,7 @@ class support_vector:
 class baggingkneighbors:
     tuned_parameters = {'max_samples':[0.5, 1], 'max_features':[0.5, 1]}
     classifier = BaggingClassifier(KNeighborsClassifier(), n_jobs=-1)
-    clf = GridSearchCV(classifier, tuned_parameters)
+    clf = GridSearchCV(classifier, tuned_parameters, refit=True)
     
     def fit(self, X_train, y_train):
         self.get_grid_search().fit(X_train, y_train.ravel())
@@ -30,7 +30,7 @@ class baggingkneighbors:
 class kneighbors:
     tuned_parameters = {'max_samples':[0.5, 1], 'max_features':[0.5, 1]}
     classifier = BaggingClassifier(KNeighborsClassifier(), n_jobs=-1)
-    clf = GridSearchCV(classifier, tuned_parameters)
+    clf = GridSearchCV(classifier, tuned_parameters, refit=True)
     
     def fit(self, X_train, y_train):
         self.get_grid_search().fit(X_train, y_train.ravel())
@@ -42,7 +42,7 @@ class kneighbors:
 class randomforest:
     tuned_parameters = {"criterion":["gini","entropy"], 'n_estimators':[50, 100, 150]}
     classifier = RandomForestClassifier()
-    clf = GridSearchCV(classifier, tuned_parameters)
+    clf = GridSearchCV(classifier, tuned_parameters, refit=True)
     
     def fit(self, X_train, y_train):
         self.get_grid_search().fit(X_train, y_train.ravel())
