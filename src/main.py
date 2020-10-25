@@ -40,7 +40,7 @@ def main():
 
     # train and test different classifiers
     # baggingkneighbors
-    classifiers = [randomforest(), support_vector() ,kneighbors()]
+    classifiers = [randomforest(), support_vector()]
     best_clf = None
     best_score = 0
     for clf in classifiers:
@@ -53,7 +53,10 @@ def main():
     print('best classifier was ', best_clf)
 
     #perform prediction with best classifier
-
+    pred_test = best_clf.get_grid_search().predict(X_test)
+    pred_score = get_score(pred_test, Y_test)
+    
+    print('predicted test score: ', pred_score)
 
 def create_smaller_file(X, y):
     '''create and save a smaller file for testing'''
