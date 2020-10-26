@@ -7,6 +7,11 @@ from sklearn.neural_network import MLPClassifier
 from sklearn.model_selection import train_test_split, GridSearchCV
 from sklearn.tree import DecisionTreeClassifier
 
+'''
+classes to represent the different classifiers
+all classes creates a grid search cross validation object with its own parameters
+'''
+
 class support_vector:
     tuned_parameters = {"penalty":['l1', 'l2']}
     classifier = LinearSVC(max_iter=3000, dual=False)
@@ -73,12 +78,3 @@ class decisionTree: ##er det vits å ha decision tree og random forest?
     
     def get_grid_search(self):
         return self.clf
-
-
-        
-        
-
-        
-        
-        
-      

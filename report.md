@@ -56,3 +56,5 @@ We have a 97,9 percent accuraccy on the test data, and we would expect that on u
 
 ### possible improvements
 
+- with more processing/time, we could search for more precise hyperparamaters or try out other parameters.
+- we could try other classifiers, or bagging classifiers.
