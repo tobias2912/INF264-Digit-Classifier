@@ -12,6 +12,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 from numpy import genfromtxt
 from classifiers import *
+import time
 
 def main():
     '''
@@ -20,11 +21,11 @@ def main():
     calculates accuracy of selected model on test set.
     '''
     np.random.seed(123456)
-    if False:
+    if True:
         #create a smaller testfile for testing
         digits = get_feature('../data/handwritten_digits_images.csv')
         label = get_label('../data/handwritten_digits_labels.csv')
-        create_smaller_file(digits, label)
+        # create_smaller_file(digits, label)
     else:
         #read given file
         digits=get_feature('../data/digit_smaller.csv')
@@ -43,6 +44,7 @@ def main():
     classifiers = [randomforest(), support_vector(), MLP_classifier()]
     best_clf = None
     best_score = 0
+    start = time.time()
     for clf in classifiers:
         print('fits classifier...', type(clf).__name__)
         clf.fit(X_train, Y_train)
@@ -50,13 +52,18 @@ def main():
         print('score:', score)
         if score>best_score:
             best_clf = clf
+        print(f'best params{clf.get_grid_search().best_params_}')
+        totaltime = time.time() - start
+        print('fitting finished in ', totaltime, 'seconds')
     print('best classifier was ', best_clf)
 
     #perform prediction with best classifier
+    start = time.time()
     pred_test = best_clf.get_grid_search().predict(X_test)
     pred_score = get_score(pred_test, Y_test)
-    
+    totaltime = time.time() - start
     print('predicted test score: ', pred_score)
+    print('prediction took ', totaltime, 'seconds')
 
 def create_smaller_file(X, y):
     '''create and save a smaller file for testing'''

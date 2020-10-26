@@ -14,6 +14,8 @@ Folder structure:
 
     Main file: /src/main.py
 
+most relevant code is in main.py.
+
 ## summary
 
 This project is to create a machine learning model for classifying hand-written digits.
@@ -26,7 +28,7 @@ This project is to create a machine learning model for classifying hand-written 
 
 ### algorithms
 
-- candidate algorithms were ... based on sklearns documentation.
+- candidate algorithms were RandomForestClassifier, Linear support Vector classifier and Multi-layer Perceptron classifier. Models were selected based on sklearns documentation.
 - the classifiers hyperparameters were either default or set by grid search. We chose the most important or impactful paramterers for the grid search
 
 ### performance measure
@@ -39,14 +41,12 @@ we measured accuracy in percentage of correct predictions, because a prediction 
 
 ### chosen model
 
-- random forest
-- k-neigbors
-- linear svc 
-- bagging 
+Our chosen model is Multi-layer Perceptron classifier, because it gave the highest cross validation score.
+How it works: 
 
 ### expected performance
 
-We have a ... percent accuraccy on the test data, and we would expect that on unseen data, given that the input pictures are similar in quality, resolution, angle etc. as the pcitures we have used for training.
+We have a 97,9 percent accuraccy on the test data, and we would expect that on unseen data, given that the input pictures are similar in quality, resolution, angle etc. as the pcitures we have used for training.
 
 ### overfitting
 
