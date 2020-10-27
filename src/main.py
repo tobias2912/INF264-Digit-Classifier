@@ -21,18 +21,9 @@ def main():
     calculates accuracy of selected model on test set.
     '''
     np.random.seed(123456)
-    if True:
-        #create a smaller testfile for testing
-        digits = get_feature('../data/handwritten_digits_images.csv')
-        label = get_label('../data/handwritten_digits_labels.csv')
-        # create_smaller_file(digits, label)
-    else:
-        #read given file
-        digits=get_feature('../data/digit_smaller.csv')
-        label=get_feature('../data/label_smaller.csv')
-    
+    digits, label = get_data(False)
     X_train, Y_train, X_test, Y_test = split(digits, label)
-
+    
     Y_train = Y_train.reshape(-1,1)
     Y_test = Y_test.reshape(-1,1)
 
@@ -40,7 +31,6 @@ def main():
     X_test =  preprocessing.normalize(X_test) 
 
     # train and test different classifiers
-    # baggingkneighbors
     classifiers = [randomforest(), support_vector(), MLP_classifier()]
     best_clf = None
     best_score = 0
@@ -64,6 +54,19 @@ def main():
     totaltime = time.time() - start
     print('predicted test score: ', pred_score)
     print('prediction took ', totaltime, 'seconds')
+
+def get_data(full_dataset):
+    '''read files and return either full dataset or a smaller for testing.
+    can also create smaller files'''
+    if full_dataset:
+        digits = get_feature('../data/handwritten_digits_images.csv')
+        label = get_label('../data/handwritten_digits_labels.csv')
+        # create_smaller_file(digits, label)
+    else:
+        #read given file
+        digits=get_feature('../data/digit_smaller.csv')
+        label=get_feature('../data/label_smaller.csv')
+    return digits, label
 
 def create_smaller_file(X, y):
     '''create and save a smaller file for testing'''
