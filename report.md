@@ -25,7 +25,8 @@ The real life accuracy may be lower depending on how new digits are scanned, lig
 
 ### preprocessing steps
 
-- Tried scaling, but had no impact
+- normalized input data
+- Tried scaling, but had no a slight negative impact
 - difficult to do any feature engineering on pixels
 
 ### algorithms
@@ -35,7 +36,7 @@ The real life accuracy may be lower depending on how new digits are scanned, lig
 
 ### performance measure
 
-we measured accuracy in percentage of correct predictions, because a prediction is either right or wrong and the amount of diviation from correct is not important.
+we measured accuracy in percentage of correct predictions, because a prediction is either right or wrong and the amount of deviation from correct is not important.
 
 ### model selection scheme
 
