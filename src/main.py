@@ -26,7 +26,7 @@ def main():
     #X_test = preprocessing.scale(X_test)
 
     # train and test different classifiers
-    classifiers = [MLP_classifier(),randomforest(), support_vector()] 
+    classifiers = [randomforest()]#MLP_classifier(),randomforest(), support_vector()] 
     best_clf = None
     best_score = 0
     start = time.time()
@@ -50,7 +50,7 @@ def main():
     print('predicted test score: ', pred_score)
     print('prediction took ', totaltime, 'seconds')
     
-    model_stats(clf, X_test, Y_test)
+    model_stats(best_clf, X_test, Y_test)
 
 def get_data(full_dataset):
     '''read files and return either full dataset or a smaller for testing.
@@ -106,17 +106,10 @@ def plot(digits, label, predict):
 
 def model_stats(clf, X_test, Y_test):
     '''predicts test valuesprints stats on classifier performance'''
-    print("best params: ", clf.best_params_)
-    print("predicts test data...")
-    predict = clf.predict(X_test)
-    score = get_score(predict, Y_test)
     disp = metrics.plot_confusion_matrix(clf, X_test, Y_test)
     disp.figure_.suptitle("Confusion Matrix")
     print("Confusion matrix:\n%s" % disp.confusion_matrix)
     plt.show()
-    
-    #print('score ',score)
-    #return score
 
 def get_feature(fileName):
     return genfromtxt(fileName, delimiter=',')
