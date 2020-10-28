@@ -1,7 +1,5 @@
-from sklearn  import  metrics, preprocessing
-from sklearn.svm import LinearSVC, SVC
+from sklearn.svm import LinearSVC
 from sklearn.ensemble import RandomForestClassifier, BaggingClassifier
-from sklearn.linear_model import LinearRegression
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.neural_network import MLPClassifier
 from sklearn.model_selection import train_test_split, GridSearchCV
