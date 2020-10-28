@@ -19,21 +19,19 @@ def main():
     Y_train = Y_train.reshape(-1,1)
     Y_test = Y_test.reshape(-1,1)
 
-    #X_train_norm =  preprocessing.normalize(X_train) 
-    #X_test_norm =  preprocessing.normalize(X_test) 
+    X_train =  preprocessing.normalize(X_train) 
+    X_test =  preprocessing.normalize(X_test) 
     
-    #X_train_scaled = preprocessing.scale(X_train)
-    #X_test_scaled = preprocessing.scale(X_test)
+    #X_train = preprocessing.scale(X_train)
+    #X_test = preprocessing.scale(X_test)
 
     # train and test different classifiers
-    classifiers = [randomforest(), support_vector(), MLP_classifier()] 
+    classifiers = [MLP_classifier(),randomforest(), support_vector()] 
     best_clf = None
     best_score = 0
     start = time.time()
     for clf in classifiers:
         print('fits classifier...', type(clf).__name__)
-        #clf.fit(X_train_scaled, Y_train)   vet ikke om man trenger å fitte alle modellene??
-        #clf.fit(X_train_norm, Y_train)
         clf.fit(X_train, Y_train)
         score = clf.get_grid_search().best_score_
         print('score:', score)
@@ -47,15 +45,9 @@ def main():
     #perform prediction with best classifier
     start = time.time()
     pred_test = best_clf.get_grid_search().predict(X_test)
-    #pred_test_scaled = best_clf.get_grid_search().predict(X_test_scaled)
-    #pred_test_norm = best_clf.get_grid_search().predict(X_test_norm)
     pred_score = get_score(pred_test, Y_test)
-    #pred_score_scaled = get_score(pred_test_scaled, Y_test)
-    #pred_score_norm = get_score(pred_test_norm, Y_test)
     totaltime = time.time() - start
     print('predicted test score: ', pred_score)
-    #print('predicted test score on scaled data: ', pred_score_scaled)
-    #print('predicted test score on normalized data: ', pred_score_norm)
     print('prediction took ', totaltime, 'seconds')
     
     model_stats(clf, X_test, Y_test)

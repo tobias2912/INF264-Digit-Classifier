@@ -55,7 +55,7 @@ class randomforest:
         return self.clf
     
 class MLP_classifier():
-    tuned_parameters = {"hidden_layer_sizes":[100,200]}
+    tuned_parameters = {"hidden_layer_sizes":[100,200], 'activation':['logistic', 'tanh', 'relu'], 'learning_rate_init': [0.001, 0.01]}
     classifier = MLPClassifier(max_iter=3000)
     clf = GridSearchCV(classifier, tuned_parameters, refit=True)
     
