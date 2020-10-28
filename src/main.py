@@ -57,6 +57,8 @@ def main():
     #print('predicted test score on scaled data: ', pred_score_scaled)
     #print('predicted test score on normalized data: ', pred_score_norm)
     print('prediction took ', totaltime, 'seconds')
+    
+    model_stats(clf, X_test, Y_test)
 
 def get_data(full_dataset):
     '''read files and return either full dataset or a smaller for testing.
@@ -107,7 +109,8 @@ def plot(digits, label, predict):
     img = digits.reshape(digits.shape[0], 28, 28)
     plt.imshow(img[predict], cmap="Greys")
     print(label[predict])
-    plt.show()    
+    plt.show()
+      
 
 def model_stats(clf, X_test, Y_test):
     '''predicts test valuesprints stats on classifier performance'''
@@ -116,10 +119,12 @@ def model_stats(clf, X_test, Y_test):
     predict = clf.predict(X_test)
     score = get_score(predict, Y_test)
     disp = metrics.plot_confusion_matrix(clf, X_test, Y_test)
+    disp.figure_.suptitle("Confusion Matrix")
     print("Confusion matrix:\n%s" % disp.confusion_matrix)
-    print('score ',score)
-    return score
-
+    plt.show()
+    
+    #print('score ',score)
+    #return score
 
 def get_feature(fileName):
     return genfromtxt(fileName, delimiter=',')

@@ -42,8 +42,7 @@ class kneighbors:
     
     def get_grid_search(self):
         return self.clf
-    
-    
+       
 class randomforest:
     tuned_parameters = {"criterion":["gini","entropy"], 'n_estimators':[50, 100, 150]}
     classifier = RandomForestClassifier()
@@ -65,14 +64,4 @@ class MLP_classifier():
     
     def get_grid_search(self):
         return self.clf
-    
-class decisionTree: ##er det vits å ha decision tree og random forest?
-    tuned_parameters = {"criterion":["gini","entropy"], 'n_estimators':[50, 100, 150]}
-    classifier = DecisionTreeClassifier()
-    clf = GridSearchCV(classifier, tuned_parameters, refit=True)
-    
-    def fit(self, X_train, y_train):
-        self.get_grid_search().fit(X_train, y_train.ravel())
-    
-    def get_grid_search(self):
-        return self.clf
+
