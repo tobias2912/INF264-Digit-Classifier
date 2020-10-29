@@ -4,6 +4,7 @@ from sklearn.model_selection import train_test_split, GridSearchCV
 import numpy as np
 from numpy import genfromtxt
 from classifiers import *
+import matplotlib.pyplot as plt
 import time
 
 def main():
@@ -26,7 +27,7 @@ def main():
     #X_test = preprocessing.scale(X_test)
 
     # train and test different classifiers
-    classifiers = [randomforest()]#MLP_classifier(),randomforest(), support_vector()] 
+    classifiers = [MLP_classifier(),randomforest(), support_vector()] 
     best_clf = None
     best_score = 0
     start = time.time()
@@ -40,6 +41,7 @@ def main():
         print(f'best params{clf.get_grid_search().best_params_}')
         totaltime = time.time() - start
         print('fitting finished in ', totaltime, 'seconds')
+        model_stats(clf.get_grid_search(), X_test, Y_test)
     print('best classifier was ', best_clf)
 
     #perform prediction with best classifier
@@ -50,7 +52,8 @@ def main():
     print('predicted test score: ', pred_score)
     print('prediction took ', totaltime, 'seconds')
     
-    model_stats(best_clf, X_test, Y_test)
+    #plot the confusion matrix for the best classifier
+    #model_stats(best_clf.get_grid_search(), X_test, Y_test)
 
 def get_data(full_dataset):
     '''read files and return either full dataset or a smaller for testing.
@@ -105,9 +108,9 @@ def plot(digits, label, predict):
       
 
 def model_stats(clf, X_test, Y_test):
-    '''predicts test valuesprints stats on classifier performance'''
-    disp = metrics.plot_confusion_matrix(clf, X_test, Y_test)
-    disp.figure_.suptitle("Confusion Matrix")
+    '''plots confusion matrix'''
+    disp = metrics.plot_confusion_matrix(clf, X_test, Y_test, normalize='true')
+    disp.figure_.suptitle(f"Confusion Matrix for classifier:{clf}")
     print("Confusion matrix:\n%s" % disp.confusion_matrix)
     plt.show()
 
